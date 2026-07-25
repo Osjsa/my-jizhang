@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我的日常记账本</title>
+  <style>
+    * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { padding: 16px; background: #f2f2f7; color: #1c1c1e; margin: 0; max-width: 500px; margin: 0 auto; }
+    .card { background: white; padding: 16px; border-radius: 14px; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+    .total-box { background: linear-gradient(135deg, #007aff, #0056b3); color: white; padding: 20px; text-align: center; border-radius: 16px; margin-bottom: 16px; }
+    .total-amount { font-size: 36px; font-weight: bold; margin-top: 8px; }
+    input, button { width: 100%; padding: 12px; margin-top: 10px; border: 1px solid #e5e5ea; border-radius: 10px; font-size: 16px; outline: none; }
+    input:focus { border-color: #007aff; }
+    button { background: #34c759; color: white; border: none; font-weight: bold; margin-top: 14px; font-size: 17px; cursor: pointer; }
+    button:active { opacity: 0.8; }
+    .item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f2f2f7; }
+    .item:last-child { border-bottom: none; }
+    .note { font-weight: 600; font-size: 16px; }
+    .date { color: #8e8e93; font-size: 13px; margin-top: 2px; }
+    .amount { font-weight: bold; color: #ff3b30; font-size: 17px; }
+    .del-btn { color: #c7c7cc; font-size: 12px; margin-left: 8px; border: none; background: none; width: auto; padding: 0; }
+  </style>
+</head>
+<body>
+
+  <!-- 本月统计卡片 -->
+  <div class="total-box">
+    <div id="monthLabel">本月至今总消费</div>
+    <div class="total-amount" id="totalAmount">¥ 0.00</div>
+  </div>
+
+  <!-- 记账输入表单 -->
+  <div class="card">
+    <h3 style="margin:0 0 10px 0;">📝 记一笔支出</h3>
+    <label style="font-size:12px; color:#8e8e93;">消费日期</label>
+    <input type="date" id="dateInput">
+    <input type="number" id="amountInput" placeholder="金额 (例如: 25.5)" step="0.01">
+    <input type="text" id="noteInput" placeholder="备注 (如: 午饭、打车、超市)">
+    <button onclick="addExpense()">保存记录</button>
+  </div>
+
+  <!-- 账单明细列表 -->
+  <div class="card">
+    <h3 style="margin:0 0 10px 0;">📅 本月明细列表</h3>
+    <div id="expenseList"></div>
+  </div>
+
+  <script>
+    // 默认选定今天
+    document.getElementById('dateInput').valueAsDate = new Date();
+
+    function getExpenses() {
+      return JSON.parse(localStorage.getItem('my_website_expenses') || '[]');
+    }
+
+    function addExpense() {
+      const date = document.getElementById('dateInput').value;
+      const amount = parseFloat(document.getElementById('amountInput').value);
+      const note = document.getElementById('noteInput').value.trim() || '日常消费';
+
+      if (!date || isNaN(amount) || amount <= 0) {
+        alert('请输入正确的金额和日期！');
+        return;
+      }
+
+      const expenses = getExpenses();
+      expenses.push({ id: Date.now(), date, amount, note });
+      localStorage.setItem('my_website_expenses', JSON.stringify(expenses));
+
+      // 清空输入框
+      document.getElementById('amountInput').value = '';
+      document.getElementById('noteInput').value = '';
+
+      render();
+    }
+
+    function deleteItem(id) {
+      if (confirm('确定删除这条记录吗？')) {
+        let expenses = getExpenses();
+        expenses = expenses.filter(item => item.id !== id);
+        localStorage.setItem('my_website_expenses', JSON.stringify(expenses));
+        render();
+      }
+    }
+
+    function render() {
+      const expenses = getExpenses();
+      const now = new Date();
+      const currentYearMonth = now.toISOString().slice(0, 7); // 获取本月 "YYYY-MM"
+
+      document.getElementById('monthLabel').innerText = `${now.getMonth() + 1}月1日至今总消费`;
+
+      let monthTotal = 0;
+      const listEl = document.getElementById('expenseList');
+      listEl.innerHTML = '';
+
+      // 选出本月的记录并按日期倒序
+      const monthlyData = expenses
+        .filter(item => item.date.startsWith(currentYearMonth))
+        .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      if (monthlyData.length === 0) {
+        listEl.innerHTML = '<div style="text-align:center; color:#8e8e93; padding:20px 0;">本月还没有记账记录哦~</div>';
+      } else {
+        monthlyData.forEach(item => {
+          monthTotal += item.amount;
+          const div = document.createElement('div');
+          div.className = 'item';
+          div.innerHTML = `
+            <div>
+              <div class="note">${item.note}</div>
+              <div class="date">${item.date}</div>
+            </div>
+            <div style="display:flex; align-items:center;">
+              <span class="amount">-¥${item.amount.toFixed(2)}</span>
+              <button class="del-btn" onclick="deleteItem(${item.id})">❌</button>
+            </div>
+          `;
+          listEl.appendChild(div);
+        });
+      }
+
+      document.getElementById('totalAmount').innerText = `¥ ${monthTotal.toFixed(2)}`;
+    }
+
+    render();
+  </script>
+</body>
+  </html>
+  
