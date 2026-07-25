@@ -1,535 +1,1539 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的消费记录</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+<title>我的可爱消费账本</title>
 
-        body {
-            margin: 0;
-            padding: 20px;
-            background: #f4f6f8;
-            font-family: Arial, "Microsoft YaHei", sans-serif;
-            color: #222;
-        }
+<style>
 
-        .container {
-            max-width: 900px;
-            margin: auto;
-        }
+* {
+    box-sizing: border-box;
+}
 
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+body {
 
-        .card {
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-        }
+    margin: 0;
 
-        .summary {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-bottom: 20px;
-        }
+    font-family:
+        "Microsoft YaHei",
+        "PingFang SC",
+        sans-serif;
 
-        .summary-box {
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-        }
+    background:
 
-        .summary-box h3 {
-            margin: 0 0 10px;
-            font-size: 15px;
-            color: #666;
-        }
+        radial-gradient(circle at 10% 10%,
+        #fff4bd 0 5px,
+        transparent 6px),
 
-        .summary-box strong {
-            font-size: 25px;
-        }
+        radial-gradient(circle at 90% 20%,
+        #ffd9e8 0 5px,
+        transparent 6px),
 
-        .form-row {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 12px;
-        }
+        linear-gradient(
+            135deg,
+            #fff8e7,
+            #ffeef5
+        );
 
-        input, select, button {
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            font-size: 15px;
-        }
+    background-size:
+        80px 80px,
+        100px 100px,
+        100% 100%;
 
-        input, select {
-            flex: 1;
-            min-width: 0;
-        }
+    color: #5a4650;
 
-        button {
-            border: none;
-            cursor: pointer;
-            background: #222;
-            color: white;
-        }
+    min-height: 100vh;
 
-        button:hover {
-            opacity: 0.85;
-        }
+    padding: 20px 12px 50px;
 
-        .delete-btn {
-            background: #d9534f;
-            padding: 8px 12px;
-        }
+}
 
-        .export-btn {
-            background: #555;
-            margin-top: 10px;
-        }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+/* 主容器 */
 
-        th, td {
-            padding: 12px 8px;
-            border-bottom: 1px solid #eee;
-            text-align: left;
-        }
+.container {
 
-        th {
-            color: #666;
-            font-size: 14px;
-        }
+    max-width: 900px;
 
-        .month-select {
-            width: 100%;
-            margin-bottom: 15px;
-        }
+    margin: auto;
 
-        .category-list {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-        }
+}
 
-        .category-item {
-            padding: 12px;
-            background: #f1f3f5;
-            border-radius: 8px;
-            display: flex;
-            justify-content: space-between;
-        }
 
-        .empty {
-            text-align: center;
-            color: #888;
-            padding: 20px;
-        }
+/* 顶部标题 */
 
-        @media (max-width: 600px) {
-            .summary {
-                grid-template-columns: 1fr;
-            }
+.header {
 
-            .form-row {
-                flex-direction: column;
-            }
+    position: relative;
 
-            .category-list {
-                grid-template-columns: 1fr;
-            }
+    background: #fffdf8;
 
-            table {
-                font-size: 13px;
-            }
+    border: 4px solid #ffd5df;
 
-            th, td {
-                padding: 9px 4px;
-            }
-        }
-    </style>
+    border-radius: 30px;
+
+    padding: 25px 20px;
+
+    text-align: center;
+
+    margin-bottom: 20px;
+
+    box-shadow:
+        0 8px 0 #f5c5d1,
+        0 12px 25px rgba(120, 70, 80, 0.12);
+
+}
+
+
+/* 小装饰 */
+
+.header::before {
+
+    content: "✦";
+
+    position: absolute;
+
+    left: 25px;
+
+    top: 15px;
+
+    font-size: 28px;
+
+    color: #ffd35c;
+
+}
+
+
+.header::after {
+
+    content: "♡";
+
+    position: absolute;
+
+    right: 25px;
+
+    bottom: 12px;
+
+    font-size: 30px;
+
+    color: #ff9eb7;
+
+}
+
+
+.header h1 {
+
+    margin: 0;
+
+    font-size: 30px;
+
+    color: #e97998;
+
+}
+
+
+.header p {
+
+    margin: 8px 0 0;
+
+    color: #9b7c85;
+
+}
+
+
+/* 可爱小动物 */
+
+.character {
+
+    font-size: 55px;
+
+    margin-bottom: 5px;
+
+}
+
+
+/* 卡片 */
+
+.card {
+
+    background: rgba(255, 253, 248, 0.95);
+
+    border: 3px solid #f8dce4;
+
+    border-radius: 25px;
+
+    padding: 20px;
+
+    margin-bottom: 20px;
+
+    box-shadow:
+        0 6px 0 #f4d2dc,
+        0 10px 20px rgba(100, 60, 70, 0.08);
+
+}
+
+
+.card h2 {
+
+    margin-top: 0;
+
+    color: #e97998;
+
+    font-size: 21px;
+
+}
+
+
+/* 输入区域 */
+
+.form-row {
+
+    display: flex;
+
+    gap: 10px;
+
+    margin-bottom: 12px;
+
+}
+
+
+input,
+select {
+
+    flex: 1;
+
+    min-width: 0;
+
+    padding: 13px 15px;
+
+    border-radius: 15px;
+
+    border: 2px solid #f4d4dd;
+
+    background: #fffafb;
+
+    color: #66515a;
+
+    font-size: 15px;
+
+    outline: none;
+
+}
+
+
+input:focus,
+select:focus {
+
+    border-color: #f4a8bc;
+
+    box-shadow: 0 0 0 3px #ffe4ec;
+
+}
+
+
+/* 按钮 */
+
+button {
+
+    border: none;
+
+    border-radius: 15px;
+
+    padding: 13px 20px;
+
+    background: #ff9fba;
+
+    color: white;
+
+    font-weight: bold;
+
+    font-size: 15px;
+
+    cursor: pointer;
+
+    box-shadow: 0 4px 0 #df7f9b;
+
+    transition: 0.15s;
+
+}
+
+
+button:hover {
+
+    transform: translateY(-2px);
+
+}
+
+
+button:active {
+
+    transform: translateY(3px);
+
+    box-shadow: 0 1px 0 #df7f9b;
+
+}
+
+
+/* 统计卡片 */
+
+.summary {
+
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 15px;
+
+    margin-bottom: 20px;
+
+}
+
+
+.summary-box {
+
+    position: relative;
+
+    padding: 22px 15px;
+
+    text-align: center;
+
+    background: #fffdf8;
+
+    border-radius: 25px;
+
+    border: 3px solid #f8dce4;
+
+    box-shadow: 0 5px 0 #f4d2dc;
+
+}
+
+
+.summary-box:nth-child(1) {
+
+    background: #fff1f5;
+
+}
+
+
+.summary-box:nth-child(2) {
+
+    background: #fff8d9;
+
+}
+
+
+.summary-box:nth-child(3) {
+
+    background: #eaf8ff;
+
+}
+
+
+.summary-box h3 {
+
+    margin: 0 0 10px;
+
+    font-size: 14px;
+
+    color: #987983;
+
+}
+
+
+.summary-box strong {
+
+    font-size: 25px;
+
+    color: #e97998;
+
+}
+
+
+.summary-box::after {
+
+    content: "✿";
+
+    position: absolute;
+
+    right: 12px;
+
+    top: 8px;
+
+    color: #ffb8c9;
+
+}
+
+
+/* 表格 */
+
+table {
+
+    width: 100%;
+
+    border-collapse: separate;
+
+    border-spacing: 0 8px;
+
+}
+
+
+th {
+
+    color: #a3838c;
+
+    font-size: 14px;
+
+    padding: 8px;
+
+}
+
+
+td {
+
+    background: #fff8fa;
+
+    padding: 12px 8px;
+
+    border-top: 2px solid #f8e2e7;
+
+    border-bottom: 2px solid #f8e2e7;
+
+}
+
+
+td:first-child {
+
+    border-left: 2px solid #f8e2e7;
+
+    border-radius: 13px 0 0 13px;
+
+}
+
+
+td:last-child {
+
+    border-right: 2px solid #f8e2e7;
+
+    border-radius: 0 13px 13px 0;
+
+}
+
+
+/* 删除按钮 */
+
+.delete-btn {
+
+    background: #c9b4bb;
+
+    box-shadow: 0 3px 0 #a9959b;
+
+    padding: 7px 10px;
+
+    font-size: 12px;
+
+}
+
+
+/* 月份选择 */
+
+.month-select {
+
+    width: 100%;
+
+    margin-bottom: 15px;
+
+}
+
+
+/* 分类 */
+
+.category-list {
+
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 12px;
+
+}
+
+
+.category-item {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 14px 16px;
+
+    border-radius: 18px;
+
+    background: #fff3f7;
+
+    border: 2px dashed #f2b6c7;
+
+}
+
+
+.category-item strong {
+
+    color: #e97998;
+
+}
+
+
+/* 导出按钮 */
+
+.export-btn {
+
+    margin-top: 15px;
+
+    background: #9ccfe3;
+
+    box-shadow: 0 4px 0 #75adc2;
+
+}
+
+
+/* 空数据 */
+
+.empty {
+
+    text-align: center;
+
+    color: #b49da5;
+
+    padding: 25px;
+
+}
+
+
+/* 底部装饰 */
+
+.footer {
+
+    text-align: center;
+
+    color: #b5969f;
+
+    font-size: 13px;
+
+    margin-top: 25px;
+
+}
+
+
+/* 手机端 */
+
+@media (max-width: 600px) {
+
+    body {
+
+        padding: 12px 8px 40px;
+
+    }
+
+
+    .header h1 {
+
+        font-size: 25px;
+
+    }
+
+
+    .character {
+
+        font-size: 48px;
+
+    }
+
+
+    .summary {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .form-row {
+
+        flex-direction: column;
+
+    }
+
+
+    .category-list {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    table {
+
+        font-size: 12px;
+
+    }
+
+
+    th,
+    td {
+
+        padding: 8px 4px;
+
+    }
+
+}
+
+</style>
+
 </head>
+
 
 <body>
 
+
 <div class="container">
 
-    <h1>我的消费记录</h1>
 
-    <!-- 当前月份 -->
+    <!-- 顶部 -->
+
+    <div class="header">
+
+        <div class="character">🐰🌷</div>
+
+        <h1>我的可爱消费账本</h1>
+
+        <p>今天也要好好记录每一笔小钱钱 ♡</p>
+
+    </div>
+
+
+    <!-- 记录消费 -->
+
     <div class="card">
-        <h2>记录消费</h2>
+
+        <h2>📝 记一笔消费</h2>
+
 
         <div class="form-row">
-            <input type="date" id="date">
-            <input type="number" id="amount" placeholder="消费金额（元）" step="0.01" min="0">
+
+            <input
+                type="date"
+                id="date"
+            >
+
+            <input
+                type="number"
+                id="amount"
+                placeholder="花了多少钱？💰"
+                step="0.01"
+                min="0"
+            >
+
         </div>
 
+
         <div class="form-row">
+
             <select id="category">
-                <option value="餐饮">餐饮</option>
-                <option value="交通">交通</option>
-                <option value="购物">购物</option>
-                <option value="娱乐">娱乐</option>
-                <option value="学习">学习</option>
-                <option value="住宿">住宿</option>
-                <option value="医疗">医疗</option>
-                <option value="其他">其他</option>
+
+                <option value="餐饮">🍜 餐饮</option>
+
+                <option value="交通">🚌 交通</option>
+
+                <option value="购物">🛍️ 购物</option>
+
+                <option value="娱乐">🎮 娱乐</option>
+
+                <option value="学习">📚 学习</option>
+
+                <option value="住宿">🏠 住宿</option>
+
+                <option value="医疗">💊 医疗</option>
+
+                <option value="其他">✨ 其他</option>
+
             </select>
 
-            <input type="text" id="note" placeholder="备注，例如：午饭、买耳机">
+
+            <input
+                type="text"
+                id="note"
+                placeholder="买了什么？写下来吧 ✍️"
+            >
+
         </div>
 
-        <button onclick="addExpense()">添加消费</button>
+
+        <button onclick="addExpense()">
+
+            ✨ 添加这笔消费
+
+        </button>
+
     </div>
+
 
     <!-- 数据统计 -->
+
     <div class="summary">
 
-        <div class="summary-box">
-            <h3>本月消费</h3>
-            <strong id="monthTotal">¥0.00</strong>
-        </div>
 
         <div class="summary-box">
-            <h3>今日消费</h3>
-            <strong id="todayTotal">¥0.00</strong>
+
+            <h3>🌸 本月消费</h3>
+
+            <strong id="monthTotal">
+
+                ¥0.00
+
+            </strong>
+
         </div>
 
+
         <div class="summary-box">
-            <h3>消费笔数</h3>
-            <strong id="expenseCount">0</strong>
+
+            <h3>☀️ 今日消费</h3>
+
+            <strong id="todayTotal">
+
+                ¥0.00
+
+            </strong>
+
         </div>
+
+
+        <div class="summary-box">
+
+            <h3>🧸 消费笔数</h3>
+
+            <strong id="expenseCount">
+
+                0
+
+            </strong>
+
+        </div>
+
 
     </div>
 
-    <!-- 月份选择 -->
-    <div class="card">
-        <h2>消费记录</h2>
 
-        <select id="monthSelect" class="month-select" onchange="render()">
+    <!-- 消费记录 -->
+
+    <div class="card">
+
+        <h2>📖 消费日记</h2>
+
+
+        <select
+            id="monthSelect"
+            class="month-select"
+            onchange="render()"
+        >
+
         </select>
 
+
         <table>
+
             <thead>
+
                 <tr>
+
                     <th>日期</th>
+
                     <th>类别</th>
+
                     <th>金额</th>
+
                     <th>备注</th>
+
                     <th>操作</th>
+
                 </tr>
+
             </thead>
 
+
             <tbody id="expenseTable">
+
             </tbody>
+
         </table>
 
-        <button class="export-btn" onclick="exportCSV()">
-            导出当前月份 CSV
+
+        <button
+            class="export-btn"
+            onclick="exportCSV()"
+        >
+
+            📥 导出本月账单
+
         </button>
+
     </div>
 
+
     <!-- 分类统计 -->
+
     <div class="card">
-        <h2>分类统计</h2>
-        <div id="categoryStats" class="category-list"></div>
+
+        <h2>🍰 钱钱都花在哪里啦？</h2>
+
+
+        <div
+            id="categoryStats"
+            class="category-list"
+        >
+
+        </div>
+
     </div>
+
+
+    <div class="footer">
+
+        🐰 今天也要做一个会管理钱钱的人呀 ♡
+
+    </div>
+
 
 </div>
 
+
 <script>
 
-    // 从浏览器本地读取数据
-    let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
 
-    const today = new Date();
-
-    // 默认日期为今天
-    document.getElementById("date").value =
-        today.toISOString().split("T")[0];
+let expenses =
+    JSON.parse(
+        localStorage.getItem("expenses")
+    ) || [];
 
 
-    // 添加消费
-    function addExpense() {
-
-        const date = document.getElementById("date").value;
-        const amount = parseFloat(document.getElementById("amount").value);
-        const category = document.getElementById("category").value;
-        const note = document.getElementById("note").value;
-
-        if (!date) {
-            alert("请选择日期");
-            return;
-        }
-
-        if (!amount || amount <= 0) {
-            alert("请输入正确的消费金额");
-            return;
-        }
-
-        const expense = {
-            id: Date.now(),
-            date: date,
-            amount: amount,
-            category: category,
-            note: note
-        };
-
-        expenses.push(expense);
-
-        // 保存到浏览器
-        localStorage.setItem("expenses", JSON.stringify(expenses));
-
-        // 清空输入
-        document.getElementById("amount").value = "";
-        document.getElementById("note").value = "";
-
-        render();
-    }
+const today =
+    new Date();
 
 
-    // 删除消费
-    function deleteExpense(id) {
-
-        if (!confirm("确定要删除这条消费记录吗？")) {
-            return;
-        }
-
-        expenses = expenses.filter(expense => expense.id !== id);
-
-        localStorage.setItem("expenses", JSON.stringify(expenses));
-
-        render();
-    }
+document
+    .getElementById("date")
+    .value =
+    today
+    .toISOString()
+    .split("T")[0];
 
 
-    // 获取当前月份
-    function getCurrentMonth() {
 
-        return today.getFullYear() + "-" +
-            String(today.getMonth() + 1).padStart(2, "0");
+function addExpense() {
+
+
+    const date =
+        document
+        .getElementById("date")
+        .value;
+
+
+    const amount =
+        parseFloat(
+            document
+            .getElementById("amount")
+            .value
+        );
+
+
+    const category =
+        document
+        .getElementById("category")
+        .value;
+
+
+    const note =
+        document
+        .getElementById("note")
+        .value;
+
+
+    if (!date) {
+
+        alert("请先选择日期呀 🥺");
+
+        return;
 
     }
 
 
-    // 获取所有存在记录的月份
-    function getMonths() {
+    if (!amount || amount <= 0) {
 
-        const months = expenses.map(expense => expense.date.slice(0, 7));
+        alert("请输入正确的金额哦 💰");
 
-        const currentMonth = getCurrentMonth();
+        return;
 
-        months.push(currentMonth);
-
-        return [...new Set(months)].sort().reverse();
     }
 
 
-    // 更新月份选择器
-    function updateMonthSelect() {
+    const expense = {
 
-        const select = document.getElementById("monthSelect");
+        id: Date.now(),
 
-        const oldValue = select.value;
+        date: date,
 
-        select.innerHTML = "";
+        amount: amount,
 
-        getMonths().forEach(month => {
+        category: category,
 
-            const option = document.createElement("option");
+        note: note
+
+    };
+
+
+    expenses.push(expense);
+
+
+    localStorage.setItem(
+
+        "expenses",
+
+        JSON.stringify(expenses)
+
+    );
+
+
+    document
+        .getElementById("amount")
+        .value = "";
+
+
+    document
+        .getElementById("note")
+        .value = "";
+
+
+    render();
+
+}
+
+
+
+function deleteExpense(id) {
+
+
+    if (
+        !confirm(
+            "真的要删除这笔消费吗？🐰"
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    expenses =
+        expenses.filter(
+
+            expense =>
+                expense.id !== id
+
+        );
+
+
+    localStorage.setItem(
+
+        "expenses",
+
+        JSON.stringify(expenses)
+
+    );
+
+
+    render();
+
+}
+
+
+
+function getCurrentMonth() {
+
+
+    return (
+
+        today
+        .getFullYear()
+
+        +
+
+        "-"
+
+        +
+
+        String(
+
+            today
+            .getMonth() + 1
+
+        ).padStart(2, "0")
+
+    );
+
+}
+
+
+
+function getMonths() {
+
+
+    const months =
+
+        expenses.map(
+
+            expense =>
+                expense.date.slice(0, 7)
+
+        );
+
+
+    months.push(
+
+        getCurrentMonth()
+
+    );
+
+
+    return [
+
+        ...new Set(months)
+
+    ].sort().reverse();
+
+}
+
+
+
+function updateMonthSelect() {
+
+
+    const select =
+
+        document
+        .getElementById(
+            "monthSelect"
+        );
+
+
+    const oldValue =
+
+        select.value;
+
+
+    select.innerHTML = "";
+
+
+    getMonths()
+        .forEach(month => {
+
+
+            const option =
+
+                document
+                .createElement(
+                    "option"
+                );
+
 
             option.value = month;
-            option.textContent = month;
 
-            select.appendChild(option);
+
+            option.textContent =
+
+                "🌷 " + month;
+
+
+            select.appendChild(
+                option
+            );
+
 
         });
 
-        if (getMonths().includes(oldValue)) {
-            select.value = oldValue;
-        }
+
+    if (
+
+        getMonths()
+        .includes(oldValue)
+
+    ) {
+
+        select.value =
+            oldValue;
 
     }
 
+}
 
-    // 渲染页面
-    function render() {
 
-        updateMonthSelect();
 
-        const selectedMonth =
-            document.getElementById("monthSelect").value;
+function render() {
 
-        const monthExpenses = expenses.filter(expense =>
-            expense.date.startsWith(selectedMonth)
+
+    updateMonthSelect();
+
+
+    const selectedMonth =
+
+        document
+        .getElementById(
+            "monthSelect"
+        )
+        .value;
+
+
+    const monthExpenses =
+
+        expenses.filter(
+
+            expense =>
+                expense.date
+                .startsWith(
+                    selectedMonth
+                )
+
         );
 
-        // 计算月份总消费
-        const monthTotal = monthExpenses.reduce(
-            (sum, expense) => sum + expense.amount,
+
+    const monthTotal =
+
+        monthExpenses.reduce(
+
+            (sum, expense) =>
+
+                sum + expense.amount,
+
             0
+
         );
 
-        // 计算今日消费
-        const todayString =
-            today.toISOString().split("T")[0];
 
-        const todayTotal = expenses
-            .filter(expense => expense.date === todayString)
-            .reduce((sum, expense) => sum + expense.amount, 0);
+    const todayString =
 
-        document.getElementById("monthTotal").textContent =
-            "¥" + monthTotal.toFixed(2);
-
-        document.getElementById("todayTotal").textContent =
-            "¥" + todayTotal.toFixed(2);
-
-        document.getElementById("expenseCount").textContent =
-            monthExpenses.length;
+        today
+        .toISOString()
+        .split("T")[0];
 
 
-        // 显示消费记录
-        const table = document.getElementById("expenseTable");
+    const todayTotal =
 
-        table.innerHTML = "";
+        expenses
+        .filter(
 
-        if (monthExpenses.length === 0) {
+            expense =>
+                expense.date ===
+                todayString
 
-            table.innerHTML = `
-                <tr>
-                    <td colspan="5" class="empty">
-                        这个月还没有消费记录
-                    </td>
-                </tr>
-            `;
+        )
+        .reduce(
 
-        } else {
+            (sum, expense) =>
 
-            monthExpenses
-                .sort((a, b) => b.date.localeCompare(a.date))
-                .forEach(expense => {
+                sum + expense.amount,
 
-                    const row = document.createElement("tr");
+            0
+
+        );
+
+
+    document
+        .getElementById(
+            "monthTotal"
+        )
+        .textContent =
+
+        "¥" +
+        monthTotal.toFixed(2);
+
+
+    document
+        .getElementById(
+            "todayTotal"
+        )
+        .textContent =
+
+        "¥" +
+        todayTotal.toFixed(2);
+
+
+    document
+        .getElementById(
+            "expenseCount"
+        )
+        .textContent =
+
+        monthExpenses.length;
+
+
+    const table =
+
+        document
+        .getElementById(
+            "expenseTable"
+        );
+
+
+    table.innerHTML = "";
+
+
+    if (
+
+        monthExpenses.length === 0
+
+    ) {
+
+
+        table.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="5"
+                    class="empty"
+                >
+
+                    🐰 这个月还没有消费记录呢
+
+                </td>
+
+            </tr>
+
+        `;
+
+
+    } else {
+
+
+        monthExpenses
+
+            .sort(
+
+                (a, b) =>
+
+                    b.date
+                    .localeCompare(
+                        a.date
+                    )
+
+            )
+
+
+            .forEach(
+
+                expense => {
+
+
+                    const row =
+
+                        document
+                        .createElement(
+                            "tr"
+                        );
+
 
                     row.innerHTML = `
-                        <td>${expense.date}</td>
-                        <td>${expense.category}</td>
-                        <td>¥${expense.amount.toFixed(2)}</td>
-                        <td>${expense.note || "-"}</td>
+
                         <td>
-                            <button
-                                class="delete-btn"
-                                onclick="deleteExpense(${expense.id})">
-                                删除
-                            </button>
+
+                            ${expense.date}
+
                         </td>
+
+
+                        <td>
+
+                            ${expense.category}
+
+                        </td>
+
+
+                        <td>
+
+                            <strong>
+
+                                ¥${expense.amount.toFixed(2)}
+
+                            </strong>
+
+                        </td>
+
+
+                        <td>
+
+                            ${expense.note || "—"}
+
+                        </td>
+
+
+                        <td>
+
+                            <button
+
+                                class="delete-btn"
+
+                                onclick=
+
+                                "deleteExpense(${expense.id})"
+
+                            >
+
+                                删除
+
+                            </button>
+
+                        </td>
+
                     `;
 
-                    table.appendChild(row);
 
-                });
+                    table
+                        .appendChild(
+                            row
+                        );
 
-        }
+
+                }
+
+            );
+
+    }
 
 
-        // 分类统计
-        const categoryStats = {};
+    const categoryStats = {};
 
-        monthExpenses.forEach(expense => {
 
-            if (!categoryStats[expense.category]) {
-                categoryStats[expense.category] = 0;
+    monthExpenses
+        .forEach(
+
+            expense => {
+
+
+                if (
+
+                    !categoryStats[
+                        expense.category
+                    ]
+
+                ) {
+
+                    categoryStats[
+                        expense.category
+                    ] = 0;
+
+                }
+
+
+                categoryStats[
+                    expense.category
+                ] += expense.amount;
+
+
             }
 
-            categoryStats[expense.category] += expense.amount;
+        );
 
-        });
 
-        const categoryContainer =
-            document.getElementById("categoryStats");
+    const categoryContainer =
 
-        categoryContainer.innerHTML = "";
+        document
+        .getElementById(
+            "categoryStats"
+        );
 
-        Object.entries(categoryStats)
-            .sort((a, b) => b[1] - a[1])
-            .forEach(([category, amount]) => {
 
-                categoryContainer.innerHTML += `
-                    <div class="category-item">
-                        <span>${category}</span>
-                        <strong>¥${amount.toFixed(2)}</strong>
+    categoryContainer.innerHTML = "";
+
+
+    Object
+        .entries(
+            categoryStats
+        )
+
+
+        .sort(
+
+            (a, b) =>
+
+                b[1] - a[1]
+
+        )
+
+
+        .forEach(
+
+            ([category, amount]) => {
+
+
+                categoryContainer
+                    .innerHTML += `
+
+                    <div
+
+                        class="category-item"
+
+                    >
+
+                        <span>
+
+                            ${category}
+
+                        </span>
+
+
+                        <strong>
+
+                            ¥${amount.toFixed(2)}
+
+                        </strong>
+
                     </div>
+
                 `;
 
-            });
 
-        if (Object.keys(categoryStats).length === 0) {
+            }
 
-            categoryContainer.innerHTML =
-                '<div class="empty">暂无分类数据</div>';
+        );
 
-        }
+
+    if (
+
+        Object.keys(
+            categoryStats
+        ).length === 0
+
+    ) {
+
+        categoryContainer.innerHTML =
+
+            '<div class="empty">还没有分类数据喔 🐰</div>';
 
     }
 
+}
 
-    // 导出 CSV
-    function exportCSV() {
 
-        const selectedMonth =
-            document.getElementById("monthSelect").value;
 
-        const monthExpenses = expenses.filter(expense =>
-            expense.date.startsWith(selectedMonth)
+function exportCSV() {
+
+
+    const selectedMonth =
+
+        document
+        .getElementById(
+            "monthSelect"
+        )
+        .value;
+
+
+    const monthExpenses =
+
+        expenses.filter(
+
+            expense =>
+                expense.date
+                .startsWith(
+                    selectedMonth
+                )
+
         );
 
-        let csv = "日期,类别,金额,备注\n";
 
-        monthExpenses.forEach(expense => {
+    let csv =
 
-            csv += `${expense.date},${expense.category},${expense.amount},${expense.note}\n`;
+        "日期,类别,金额,备注\n";
 
-        });
 
-        const blob = new Blob(
-            ["\ufeff" + csv],
-            { type: "text/csv;charset=utf-8;" }
+    monthExpenses
+        .forEach(
+
+            expense => {
+
+
+                csv +=
+
+                    `${expense.date},${expense.category},${expense.amount},${expense.note}\n`;
+
+
+            }
+
         );
 
-        const url = URL.createObjectURL(blob);
 
-        const link = document.createElement("a");
+    const blob =
 
-        link.href = url;
-        link.download = `${selectedMonth}消费记录.csv`;
+        new Blob(
 
-        link.click();
+            [
 
-        URL.revokeObjectURL(url);
+                "\ufeff" + csv
 
-    }
+            ],
+
+            {
+
+                type:
+                    "text/csv;charset=utf-8;"
+
+            }
+
+        );
 
 
-    // 页面加载时显示数据
-    render();
+    const url =
+
+        URL
+        .createObjectURL(
+            blob
+        );
+
+
+    const link =
+
+        document
+        .createElement(
+            "a"
+        );
+
+
+    link.href = url;
+
+
+    link.download =
+
+        `${selectedMonth}消费记录.csv`;
+
+
+    link.click();
+
+
+    URL
+        .revokeObjectURL(
+            url
+        );
+
+}
+
+
+render();
+
 
 </script>
 
+
 </body>
+
 </html>
