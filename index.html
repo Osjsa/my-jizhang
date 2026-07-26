@@ -32,7 +32,6 @@
   }
   .wrap{max-width:960px; margin:0 auto;}
 
-  /* Header */
   header{
     display:flex; align-items:flex-end; justify-content:space-between;
     border-bottom:3px double var(--ink);
@@ -50,7 +49,6 @@
     text-align:right;
   }
 
-  /* Storage notice banner */
   .storage-banner{
     display:none;
     background:var(--paper-deep); border-left:4px solid var(--seal);
@@ -59,7 +57,6 @@
   }
   .storage-banner b{font-family:'Noto Serif SC', serif;}
 
-  /* Seal / signature element */
   .seal{
     width:96px; height:96px; border-radius:50%;
     border:3.5px solid var(--seal);
@@ -77,7 +74,6 @@
   .balance-text{font-family:'Noto Serif SC', serif; font-size:15px; color:var(--ink-soft);}
   .balance-text b{color:var(--ink); font-size:22px; font-family:'JetBrains Mono', monospace;}
 
-  /* Layout */
   .grid{display:grid; grid-template-columns: 1.15fr 1fr; gap:24px;}
   @media (max-width:760px){ .grid{grid-template-columns:1fr;} }
 
@@ -94,7 +90,6 @@
   }
   .card h2 .bar{width:4px; height:16px; background:var(--seal); display:inline-block;}
 
-  /* Entry form styled as a slip */
   .type-toggle{display:flex; gap:0; margin-bottom:16px; border:1.5px solid var(--ink); width:fit-content;}
   .type-toggle button{
     font-family:'Noto Serif SC', serif; font-size:14px; padding:8px 22px;
@@ -136,7 +131,6 @@
   .save-status.err{color:var(--seal); cursor:pointer; text-decoration:underline;}
   .save-status.pending{color:var(--ink-soft);}
 
-  /* Ledger list */
   .ledger-list{max-height:520px; overflow-y:auto;}
   .ledger-row{
     display:grid; grid-template-columns: 62px 1fr auto 24px; gap:10px; align-items:center;
@@ -155,7 +149,6 @@
   .del-btn:hover{color:var(--seal);}
   .empty-note{color:var(--ink-soft); font-size:13px; text-align:center; padding:30px 0;}
 
-  /* Summary */
   .tabbar{display:flex; gap:0; margin-bottom:16px; border:1.5px solid var(--ink); width:fit-content;}
   .tabbar button{
     font-family:'Noto Serif SC', serif; font-size:13px; padding:6px 18px;
@@ -205,13 +198,12 @@
   </header>
 
   <div class="storage-banner" id="storageBanner">
-    <b>提示：</b>当前环境未能连接自动保存，记录只留在这次打开的页面里，刷新或关闭会丢失。请在离开前点击页面底部「导出备份」把记录存成文件，下次打开后用「导入备份」恢复。
+    <b>提示：</b>这个浏览器目前无法使用本地存储（可能处于无痕/隐私模式，或浏览器把网站数据存储关掉了）。记录只留在这次打开的页面里，刷新或关闭会丢失。请在离开前点击页面底部「导出备份」保存成文件，下次用「导入备份」恢复。
   </div>
 
   <div class="balance-row" id="balanceRow"></div>
 
   <div class="grid">
-    <!-- Left: entry + list -->
     <div>
       <div class="card" style="margin-bottom:20px;">
         <h2><span class="bar"></span>新 增 一 笔</h2>
@@ -245,7 +237,6 @@
       </div>
     </div>
 
-    <!-- Right: summaries -->
     <div>
       <div class="card">
         <h2><span class="bar"></span>统 计 概 览</h2>
@@ -267,7 +258,7 @@
   </div>
 
   <footer>
-    手账式记账 · 数据保存在你的账户中　
+    手账式记账 · 数据保存在当前浏览器本地，换设备/浏览器请用导出导入　
     <span class="reset-link" onclick="resetAll()">清空全部记录</span>
     <div class="backup-row">
       <button class="backup-btn" onclick="exportBackup()">⬇ 导出备份 (JSON)</button>
@@ -280,6 +271,7 @@
 <script>
 const EXPENSE_CATS = ['餐饮','交通','购物','娱乐','居住','医疗','学习','人情','其他'];
 const INCOME_CATS = ['工资/兼职','转账','红包','奖学金','报销','其他'];
+const STORAGE_KEY = 'ledger_transactions_v1';
 
 let records = [];
 let currentType = 'expense';
@@ -303,6 +295,17 @@ function renderToday(){
     `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日 · 星期${wd}`;
 }
 
+function isStorageAvailable(){
+  try{
+    const k = '__ledger_test__';
+    localStorage.setItem(k, '1');
+    localStorage.removeItem(k);
+    return true;
+  }catch(e){
+    return false;
+  }
+}
+
 function setSaveStatus(state, msg){
   const el = document.getElementById('saveStatus');
   if(!el) return;
@@ -310,39 +313,34 @@ function setSaveStatus(state, msg){
   el.textContent = msg;
   el.onclick = (state === 'err') ? () => saveRecords() : null;
   if(state === 'ok'){
-    setTimeout(() => { if(el.textContent === msg){ el.textContent = ''; el.className = 'save-status'; } }, 2500);
+    setTimeout(() => { if(el.textContent === msg){ el.textContent = ''; el.className = 'save-status'; } }, 2000);
   }
 }
 
-async function loadRecords(){
-  if(typeof window.storage === 'undefined'){
+function loadRecords(){
+  if(!isStorageAvailable()){
     records = [];
     document.getElementById('storageBanner').style.display = 'block';
     return;
   }
   try{
-    const res = await window.storage.get('transactions', false);
-    records = res && res.value ? JSON.parse(res.value) : [];
+    const raw = localStorage.getItem(STORAGE_KEY);
+    records = raw ? JSON.parse(raw) : [];
   }catch(e){
     console.error('读取记录失败：', e);
     records = [];
   }
 }
 
-async function saveRecords(){
-  if(typeof window.storage === 'undefined'){
-    setSaveStatus('err', '⚠ 无法自动保存，请点下方"导出备份"');
+function saveRecords(){
+  if(!isStorageAvailable()){
+    setSaveStatus('err', '⚠ 本地存储不可用，请用"导出备份"');
     document.getElementById('storageBanner').style.display = 'block';
     return false;
   }
-  setSaveStatus('pending', '保存中…');
   try{
-    const result = await window.storage.set('transactions', JSON.stringify(records), false);
-    if(!result){
-      setSaveStatus('err', '⚠ 保存失败，点此重试');
-      return false;
-    }
-    setSaveStatus('ok', '✓ 已保存');
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+    setSaveStatus('ok', '✓ 已保存（本机）');
     return true;
   }catch(e){
     console.error('保存失败：', e);
@@ -387,7 +385,7 @@ async function handleImportFile(e){
       }
     });
     records.sort((a,b) => b.date.localeCompare(a.date));
-    await saveRecords();
+    saveRecords();
     renderAll();
     alert(`已导入 ${added} 条记录`);
   }catch(err){
@@ -421,7 +419,7 @@ function renderCatGrid(){
   });
 }
 
-async function addRecord(){
+function addRecord(){
   const amountInput = document.getElementById('inputAmount');
   const amount = parseFloat(amountInput.value);
   if(!amount || amount <= 0){
@@ -441,22 +439,22 @@ async function addRecord(){
   });
   records.sort((a,b) => b.date.localeCompare(a.date));
 
-  await saveRecords();
+  saveRecords();
   amountInput.value = '';
   document.getElementById('inputNote').value = '';
   renderAll();
 }
 
-async function deleteRecord(id){
+function deleteRecord(id){
   records = records.filter(r => r.id !== id);
-  await saveRecords();
+  saveRecords();
   renderAll();
 }
 
-async function resetAll(){
+function resetAll(){
   if(!confirm('确定要清空全部记账记录吗？建议先导出备份。此操作无法撤销。')) return;
   records = [];
-  await saveRecords();
+  saveRecords();
   renderAll();
 }
 
@@ -573,12 +571,11 @@ function renderAll(){
   renderBalanceRow();
 }
 
-async function init(){
+function init(){
   document.getElementById('inputDate').value = todayStr();
   renderToday();
   renderCatGrid();
-  document.querySelector('.ledger-list').innerHTML = '<div class="loading">正在加载记录…</div>';
-  await loadRecords();
+  loadRecords();
   renderAll();
 }
 
