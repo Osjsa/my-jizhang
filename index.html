@@ -1,1149 +1,564 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
-
-<title>Lowstr 账单</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LOWSTR 账单</title>
 
 <style>
-
-/* =========================
-   全局
-========================= */
+* {
+    box-sizing: border-box;
+}
 
 :root {
-
-    --navy: #182230;
-
-    --text: #26313d;
-
+    --navy: #172332;
+    --text: #263442;
     --muted: #8b96a3;
-
-    --line: #e8edf2;
-
-    --background: #f7f9fb;
-
+    --line: #e6ebf0;
+    --bg: #f5f7f9;
     --white: #ffffff;
-
-    --green: #2d9b6d;
-
+    --green: #2d996b;
     --red: #d96767;
-
-    --blue: #5079a8;
-
+    --blue: #4e78a5;
 }
-
-
-* {
-
-    box-sizing: border-box;
-
-}
-
 
 body {
-
     margin: 0;
-
     min-height: 100vh;
-
-    background: var(--background);
-
+    background: var(--bg);
     color: var(--text);
-
     font-family:
-
         -apple-system,
-
         BlinkMacSystemFont,
-
         "Segoe UI",
-
         "Microsoft YaHei",
-
         sans-serif;
-
 }
-
-
-/* =========================
-   页面容器
-========================= */
 
 .container {
-
-    width: min(
-
-        1180px,
-
-        calc(100% - 40px)
-
-    );
-
+    width: min(1180px, calc(100% - 40px));
     margin: auto;
-
 }
 
-
-/* =========================
-   顶部导航
-========================= */
+/* 顶部 */
 
 .topbar {
-
     height: 80px;
-
     display: flex;
-
     align-items: center;
-
     justify-content: space-between;
-
     border-bottom: 1px solid var(--line);
-
 }
-
 
 .logo {
-
     display: flex;
-
     align-items: center;
-
     gap: 12px;
-
 }
-
 
 .logo-icon {
-
     width: 38px;
-
     height: 38px;
-
     display: flex;
-
     align-items: center;
-
     justify-content: center;
-
     border-radius: 10px;
-
     color: white;
-
     background: var(--navy);
-
-    font-size: 16px;
-
     font-weight: 700;
-
 }
-
 
 .logo-text {
-
-    font-size: 18px;
-
-    font-weight: 700;
-
-    letter-spacing: 0.5px;
-
     color: var(--navy);
-
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
 }
-
 
 .logo-subtitle {
-
     margin-top: 2px;
-
     color: var(--muted);
-
     font-size: 10px;
-
     letter-spacing: 1.5px;
-
 }
-
 
 .date-text {
-
     color: var(--muted);
-
     font-size: 13px;
-
 }
 
-
-/* =========================
-   页面标题
-========================= */
+/* 标题 */
 
 .page-heading {
-
     padding: 36px 0 25px;
-
 }
-
 
 .page-heading h1 {
-
     margin: 0;
-
     color: var(--navy);
-
     font-size: 28px;
-
-    font-weight: 650;
-
 }
-
 
 .page-heading p {
-
     margin: 8px 0 0;
-
     color: var(--muted);
-
     font-size: 14px;
-
 }
 
-
-/* =========================
-   总览区域
-========================= */
+/* 顶部统计 */
 
 .overview {
-
     display: grid;
-
-    grid-template-columns:
-
-        1.4fr
-
-        1fr
-
-        1fr;
-
+    grid-template-columns: 1.4fr 1fr 1fr;
     gap: 16px;
-
     margin-bottom: 24px;
-
 }
-
 
 .overview-card {
-
     min-height: 145px;
-
     padding: 25px;
-
     border: 1px solid var(--line);
-
     border-radius: 14px;
-
-    background: var(--white);
-
+    background: white;
 }
-
 
 .overview-card.primary {
-
     color: white;
-
-    border-color: var(--navy);
-
     background: var(--navy);
-
 }
-
 
 .overview-label {
-
     margin-bottom: 18px;
-
     color: var(--muted);
-
     font-size: 13px;
-
 }
-
 
 .primary .overview-label {
-
     color: #aeb9c6;
-
 }
-
 
 .overview-value {
-
     font-size: 30px;
-
     font-weight: 650;
-
-    letter-spacing: -0.5px;
-
 }
-
-
-.primary .overview-value {
-
-    color: white;
-
-}
-
 
 .income-value {
-
     color: var(--green);
-
 }
-
 
 .expense-value {
-
     color: var(--red);
-
 }
 
-
-/* =========================
-   主布局
-========================= */
+/* 主布局 */
 
 .main-layout {
-
     display: grid;
-
-    grid-template-columns:
-
-        340px
-
-        1fr;
-
+    grid-template-columns: 340px 1fr;
     gap: 24px;
-
     align-items: start;
-
 }
-
 
 .card {
-
     padding: 25px;
-
     border: 1px solid var(--line);
-
     border-radius: 14px;
-
-    background: var(--white);
-
+    background: white;
 }
-
 
 .card-title {
-
     margin: 0;
-
     color: var(--navy);
-
     font-size: 17px;
-
     font-weight: 650;
-
 }
-
 
 .card-subtitle {
-
     margin: 6px 0 22px;
-
     color: var(--muted);
-
     font-size: 12px;
-
 }
 
-
-/* =========================
-   收入支出按钮
-========================= */
+/* 收入支出切换 */
 
 .type-switch {
-
     display: flex;
-
     gap: 8px;
-
     padding: 4px;
-
     margin-bottom: 22px;
-
     border-radius: 9px;
-
     background: #f1f4f7;
-
 }
-
 
 .type-button {
-
     flex: 1;
-
-    height: 38px;
-
+    height: 40px;
     border: none;
-
     border-radius: 7px;
-
     color: var(--muted);
-
     background: transparent;
-
     cursor: pointer;
-
     font-size: 13px;
-
     transition: all 0.2s ease;
-
 }
-
 
 .type-button:hover {
-
     color: var(--text);
-
 }
-
 
 .type-button.active-expense {
-
     color: var(--red);
-
     background: white;
-
-    box-shadow:
-
-        0 1px 4px
-
-        rgba(
-
-            0,
-
-            0,
-
-            0,
-
-            0.08
-
-        );
-
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
 }
-
 
 .type-button.active-income {
-
     color: var(--green);
-
     background: white;
-
-    box-shadow:
-
-        0 1px 4px
-
-        rgba(
-
-            0,
-
-            0,
-
-            0,
-
-            0.08
-
-        );
-
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
 }
 
-
-/* =========================
-   表单
-========================= */
+/* 表单 */
 
 .form-group {
-
     margin-bottom: 16px;
-
 }
-
 
 .form-group label {
-
     display: block;
-
     margin-bottom: 7px;
-
     color: #66717d;
-
     font-size: 12px;
-
 }
-
 
 input,
-
 select {
-
     width: 100%;
-
     height: 42px;
-
     padding: 0 12px;
-
     border: 1px solid #dfe5eb;
-
     border-radius: 8px;
-
     outline: none;
-
     color: var(--text);
-
     background: white;
-
     font-family: inherit;
-
     font-size: 13px;
-
 }
-
 
 input:focus,
-
 select:focus {
-
     border-color: var(--blue);
-
-    box-shadow:
-
-        0 0 0 3px
-
-        rgba(
-
-            80,
-
-            121,
-
-            168,
-
-            0.10
-
-        );
-
+    box-shadow: 0 0 0 3px rgba(80, 121, 168, 0.1);
 }
-
 
 select {
-
     cursor: pointer;
-
 }
-
 
 .add-button {
-
     width: 100%;
-
     height: 44px;
-
     margin-top: 4px;
-
     border: none;
-
     border-radius: 8px;
-
     color: white;
-
     background: var(--navy);
-
     cursor: pointer;
-
     font-size: 13px;
-
     font-weight: 600;
-
-    transition: 0.2s;
-
 }
-
 
 .add-button:hover {
-
     background: #263648;
-
 }
 
-
-/* =========================
-   记录区域
-========================= */
+/* 记录 */
 
 .records-card {
-
     min-width: 0;
-
 }
-
 
 .records-header {
-
     display: flex;
-
     align-items: center;
-
     justify-content: space-between;
-
     gap: 15px;
-
     margin-bottom: 20px;
-
 }
-
 
 .month-select {
-
     width: 150px;
-
 }
-
 
 .table-wrapper {
-
     overflow-x: auto;
-
 }
-
 
 table {
-
     width: 100%;
-
     border-collapse: collapse;
-
 }
-
 
 th {
-
     padding: 11px 8px;
-
     border-bottom: 1px solid var(--line);
-
     color: var(--muted);
-
     text-align: left;
-
     font-size: 11px;
-
     font-weight: 500;
-
 }
-
 
 td {
-
     padding: 15px 8px;
-
     border-bottom: 1px solid #f0f2f4;
-
-    color: var(--text);
-
     font-size: 13px;
-
 }
-
 
 td:first-child {
-
     color: var(--muted);
-
 }
-
 
 .income-text {
-
     color: var(--green);
-
     font-weight: 600;
-
 }
-
 
 .expense-text {
-
     color: var(--red);
-
     font-weight: 600;
-
 }
-
 
 .delete-button {
-
     padding: 5px 9px;
-
     border: 1px solid #e1e6eb;
-
     border-radius: 6px;
-
     color: var(--muted);
-
     background: white;
-
     cursor: pointer;
-
     font-size: 11px;
-
 }
-
 
 .delete-button:hover {
-
     color: var(--red);
-
     border-color: #e3aaaa;
-
 }
 
-
-/* =========================
-   分类分析
-========================= */
+/* 分类分析 */
 
 .analysis-card {
-
     margin-top: 24px;
-
 }
-
 
 .category-list {
-
     display: grid;
-
-    grid-template-columns:
-
-        repeat(
-
-            auto-fit,
-
-            minmax(
-
-                150px,
-
-                1fr
-
-            )
-
-        );
-
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 12px;
-
 }
-
 
 .category-item {
-
     padding: 16px;
-
     border: 1px solid var(--line);
-
     border-radius: 10px;
-
     background: #fafbfc;
-
 }
-
 
 .category-name {
-
     margin-bottom: 9px;
-
     color: var(--muted);
-
     font-size: 12px;
-
 }
-
 
 .category-amount {
-
     font-size: 16px;
-
     font-weight: 650;
-
 }
-
 
 .export-button {
-
     height: 36px;
-
     padding: 0 14px;
-
     border: 1px solid #dfe5eb;
-
     border-radius: 7px;
-
     color: #596572;
-
     background: white;
-
     cursor: pointer;
-
     font-size: 12px;
-
 }
-
 
 .export-button:hover {
-
     border-color: var(--navy);
-
     color: var(--navy);
-
 }
-
-
-/* =========================
-   空状态
-========================= */
 
 .empty {
-
     padding: 35px 10px;
-
     color: var(--muted);
-
     text-align: center;
-
     font-size: 13px;
-
 }
 
-
-/* =========================
-   手机端
-========================= */
+/* 手机端 */
 
 @media (max-width: 900px) {
-
-
     .overview {
-
-        grid-template-columns:
-
-            1fr
-
-            1fr;
-
+        grid-template-columns: 1fr 1fr;
     }
-
 
     .overview-card.primary {
-
-        grid-column:
-
-            1 / -1;
-
+        grid-column: 1 / -1;
     }
-
 
     .main-layout {
-
         grid-template-columns: 1fr;
-
     }
-
 }
-
 
 @media (max-width: 600px) {
-
-
     .container {
-
-        width:
-
-            calc(
-
-                100% - 24px
-
-            );
-
+        width: calc(100% - 24px);
     }
-
 
     .topbar {
-
         height: 68px;
-
     }
-
 
     .date-text {
-
         display: none;
-
     }
-
 
     .page-heading {
-
         padding: 28px 0 20px;
-
     }
-
 
     .page-heading h1 {
-
         font-size: 24px;
-
     }
-
 
     .overview {
-
         grid-template-columns: 1fr;
-
     }
-
 
     .overview-card.primary {
-
         grid-column: auto;
-
     }
-
 
     .overview-card {
-
         min-height: 120px;
-
     }
-
 
     .records-header {
-
         align-items: flex-start;
-
         flex-direction: column;
-
     }
-
 
     .month-select {
-
         width: 100%;
-
     }
-
 
     .card {
-
         padding: 20px 16px;
-
     }
-
 }
-
 </style>
-
 </head>
-
 
 <body>
 
-
 <div class="container">
-
 
     <!-- 顶部 -->
 
     <header class="topbar">
 
-
         <div class="logo">
 
-
             <div class="logo-icon">
-
                 L
-
             </div>
-
 
             <div>
 
-
                 <div class="logo-text">
-
                     LOWSTR 账单
-
                 </div>
 
-
                 <div class="logo-subtitle">
-
                     PERSONAL FINANCE
-
                 </div>
 
             </div>
 
         </div>
 
-
         <div
-
             id="currentDate"
-
             class="date-text"
-
-        >
-
-        </div>
+        ></div>
 
     </header>
 
 
-    <!-- 标题 -->
+    <!-- 页面标题 -->
 
     <section class="page-heading">
 
-
         <h1>
-
             财务概览
-
         </h1>
 
-
         <p>
-
             清晰记录每一笔收入与支出。
-
         </p>
 
     </section>
 
 
-    <!-- 总览 -->
+    <!-- 顶部统计 -->
 
     <section class="overview">
 
+        <div class="overview-card primary">
 
-        <div
-
-            class="overview-card primary"
-
-        >
-
-
-            <div
-
-                class="overview-label"
-
-            >
-
+            <div class="overview-label">
                 本月净结余
-
             </div>
 
-
             <div
-
                 id="monthBalance"
-
                 class="overview-value"
-
             >
-
                 ¥0.00
-
             </div>
 
         </div>
 
 
-        <div
+        <div class="overview-card">
 
-            class="overview-card"
-
-        >
-
-
-            <div
-
-                class="overview-label"
-
-            >
-
+            <div class="overview-label">
                 本月收入
-
             </div>
 
-
             <div
-
                 id="monthIncome"
-
                 class="overview-value income-value"
-
             >
-
                 ¥0.00
-
             </div>
 
         </div>
 
 
-        <div
+        <div class="overview-card">
 
-            class="overview-card"
-
-        >
-
-
-            <div
-
-                class="overview-label"
-
-            >
-
+            <div class="overview-label">
                 本月支出
-
             </div>
 
-
             <div
-
                 id="monthExpense"
-
                 class="overview-value expense-value"
-
             >
-
                 ¥0.00
-
             </div>
 
         </div>
@@ -1156,55 +571,35 @@ td:first-child {
     <main class="main-layout">
 
 
-        <!-- 新增记录 -->
+        <!-- 添加记录 -->
 
         <section class="card">
 
-
             <h2 class="card-title">
-
                 新增记录
-
             </h2>
 
-
             <p class="card-subtitle">
-
                 添加一笔新的资金变动
-
             </p>
 
 
             <div class="type-switch">
 
-
                 <button
-
                     type="button"
-
                     id="expenseBtn"
-
                     class="type-button active-expense"
-
                 >
-
                     支出
-
                 </button>
-
 
                 <button
-
                     type="button"
-
                     id="incomeBtn"
-
                     class="type-button"
-
                 >
-
                     收入
-
                 </button>
 
             </div>
@@ -1212,20 +607,13 @@ td:first-child {
 
             <div class="form-group">
 
-
                 <label>
-
                     日期
-
                 </label>
 
-
                 <input
-
                     type="date"
-
                     id="date"
-
                 >
 
             </div>
@@ -1233,26 +621,16 @@ td:first-child {
 
             <div class="form-group">
 
-
                 <label>
-
                     金额
-
                 </label>
 
-
                 <input
-
                     type="number"
-
                     id="amount"
-
                     min="0"
-
                     step="0.01"
-
                     placeholder="请输入金额"
-
                 >
 
             </div>
@@ -1260,174 +638,91 @@ td:first-child {
 
             <div class="form-group">
 
-
                 <label>
-
                     分类
-
                 </label>
 
-
-                <select
-
-                    id="category"
-
-                >
-
-                </select>
+                <select id="category"></select>
 
             </div>
 
 
             <div class="form-group">
 
-
                 <label>
-
                     备注
-
                 </label>
-
 
                 <input
-
                     type="text"
-
                     id="note"
-
                     placeholder="例如：午餐、工资、游戏提现"
-
                 >
 
             </div>
 
 
             <button
-
                 type="button"
-
                 id="addButton"
-
                 class="add-button"
-
             >
-
                 添加支出
-
             </button>
 
         </section>
 
 
-        <!-- 记录 -->
+        <!-- 收支记录 -->
 
         <section class="card records-card">
 
-
             <div class="records-header">
-
 
                 <div>
 
-
                     <h2 class="card-title">
-
                         收支记录
-
                     </h2>
 
-
                     <p
-
                         class="card-subtitle"
-
                         style="margin-bottom:0"
-
                     >
-
                         查看当前月份的所有资金变动
-
                     </p>
 
                 </div>
 
 
                 <select
-
                     id="monthSelect"
-
                     class="month-select"
-
-                >
-
-                </select>
+                ></select>
 
             </div>
 
 
             <div class="table-wrapper">
 
-
                 <table>
-
 
                     <thead>
 
-
                         <tr>
 
-
-                            <th>
-
-                                日期
-
-                            </th>
-
-
-                            <th>
-
-                                类型
-
-                            </th>
-
-
-                            <th>
-
-                                分类
-
-                            </th>
-
-
-                            <th>
-
-                                金额
-
-                            </th>
-
-
-                            <th>
-
-                                备注
-
-                            </th>
-
-
-                            <th>
-
-                            </th>
+                            <th>日期</th>
+                            <th>类型</th>
+                            <th>分类</th>
+                            <th>金额</th>
+                            <th>备注</th>
+                            <th></th>
 
                         </tr>
 
                     </thead>
 
-
-                    <tbody
-
-                        id="recordTable"
-
-                    >
-
-                    </tbody>
+                    <tbody id="recordTable"></tbody>
 
                 </table>
 
@@ -1435,15 +730,10 @@ td:first-child {
 
 
             <button
-
                 id="exportButton"
-
                 class="export-button"
-
             >
-
                 导出 CSV
-
             </button>
 
         </section>
@@ -1453,36 +743,20 @@ td:first-child {
 
     <!-- 分类分析 -->
 
-    <section
-
-        class="card analysis-card"
-
-    >
-
+    <section class="card analysis-card">
 
         <h2 class="card-title">
-
             分类分析
-
         </h2>
 
-
         <p class="card-subtitle">
-
             当前月份的收入与支出分类
-
         </p>
 
-
         <div
-
             id="categoryStats"
-
             class="category-list"
-
-        >
-
-        </div>
+        ></div>
 
     </section>
 
@@ -1491,208 +765,115 @@ td:first-child {
 
 <script>
 
-
 /* =========================
    数据
 ========================= */
 
-
 let records =
-
     JSON.parse(
-
-        localStorage.getItem(
-
-            "moneyRecords"
-
-        )
-
+        localStorage.getItem("moneyRecords")
     ) || [];
 
-
-let currentType =
-
-    "expense";
+let currentType = "expense";
 
 
 const expenseCategories = [
-
     "餐饮",
-
     "交通",
-
     "购物",
-
     "娱乐",
-
     "学习",
-
     "住宿",
-
     "医疗",
-
     "其他支出"
-
 ];
 
 
 const incomeCategories = [
-
     "工资",
-
     "兼职",
-
     "游戏提现",
-
     "看视频赚钱",
-
     "红包",
-
     "出售物品",
-
     "投资收益",
-
     "其他收入"
-
 ];
 
 
-const today =
-
-    new Date();
+const today = new Date();
 
 
 const todayString =
-
-    today
-
-    .toISOString()
-
-    .split("T")[0];
+    today.toISOString().split("T")[0];
 
 
 /* =========================
-   获取元素
+   获取页面元素
 ========================= */
 
-
 const expenseBtn =
-
-    document
-
-    .getElementById(
-
+    document.getElementById(
         "expenseBtn"
-
     );
 
 
 const incomeBtn =
-
-    document
-
-    .getElementById(
-
+    document.getElementById(
         "incomeBtn"
-
     );
 
 
 const addButton =
-
-    document
-
-    .getElementById(
-
+    document.getElementById(
         "addButton"
-
     );
 
 
 const categorySelect =
-
-    document
-
-    .getElementById(
-
+    document.getElementById(
         "category"
-
     );
 
 
 const dateInput =
-
-    document
-
-    .getElementById(
-
+    document.getElementById(
         "date"
-
     );
 
 
 const amountInput =
-
-    document
-
-    .getElementById(
-
+    document.getElementById(
         "amount"
-
     );
 
 
 const noteInput =
-
-    document
-
-    .getElementById(
-
+    document.getElementById(
         "note"
-
     );
 
 
 const monthSelect =
-
-    document
-
-    .getElementById(
-
+    document.getElementById(
         "monthSelect"
-
     );
 
 
 dateInput.value =
-
     todayString;
 
 
-document
-
-    .getElementById(
-
-        "currentDate"
-
-    )
-
-    .textContent =
-
+document.getElementById(
+    "currentDate"
+).textContent =
     today.toLocaleDateString(
-
         "zh-CN",
-
         {
-
             year: "numeric",
-
             month: "long",
-
             day: "numeric"
-
         }
-
     );
 
 
@@ -1700,18 +881,11 @@ document
    更新分类
 ========================= */
 
-
 function updateCategories() {
 
-
     const categories =
-
-        currentType ===
-
-        "income"
-
+        currentType === "income"
             ? incomeCategories
-
             : expenseCategories;
 
 
@@ -1719,120 +893,80 @@ function updateCategories() {
 
 
     categories.forEach(
-
-        category => {
-
+        function(category) {
 
             const option =
-
-                document
-
-                .createElement(
-
+                document.createElement(
                     "option"
-
                 );
 
 
             option.value =
-
                 category;
 
 
             option.textContent =
-
                 category;
 
 
-            categorySelect
-
-                .appendChild(
-
-                    option
-
-                );
+            categorySelect.appendChild(
+                option
+            );
 
         }
-
     );
 
 }
 
 
 /* =========================
-   切换类型
+   设置收入 / 支出
 ========================= */
 
-
 function setType(type) {
-
 
     currentType = type;
 
 
-    if (
+    if (type === "income") {
 
-        type ===
-
-        "income"
-
-    ) {
+        incomeBtn.classList.add(
+            "active-income"
+        );
 
 
-        incomeBtn
-
-            .classList
-
-            .add(
-
-                "active-income"
-
-            );
+        incomeBtn.classList.remove(
+            "active-expense"
+        );
 
 
-        expenseBtn
-
-            .classList
-
-            .remove(
-
-                "active-expense"
-
-            );
+        expenseBtn.classList.remove(
+            "active-expense"
+        );
 
 
         addButton.textContent =
-
             "添加收入";
 
 
     } else {
 
-
-        expenseBtn
-
-            .classList
-
-            .add(
-
-                "active-expense"
-
-            );
+        expenseBtn.classList.add(
+            "active-expense"
+        );
 
 
-        incomeBtn
+        expenseBtn.classList.remove(
+            "active-income"
+        );
 
-            .classList
 
-            .remove(
-
-                "active-income"
-
-            );
+        incomeBtn.classList.remove(
+            "active-income"
+        );
 
 
         addButton.textContent =
-
             "添加支出";
 
     }
@@ -1844,86 +978,48 @@ function setType(type) {
 
 
 /* =========================
-   事件绑定
+   按钮事件
 ========================= */
 
+expenseBtn.addEventListener(
+    "click",
+    function() {
 
-expenseBtn
+        setType("expense");
 
-    .addEventListener(
-
-        "click",
-
-        function() {
-
-
-            setType(
-
-                "expense"
-
-            );
-
-        }
-
-    );
+    }
+);
 
 
-incomeBtn
+incomeBtn.addEventListener(
+    "click",
+    function() {
 
-    .addEventListener(
+        setType("income");
 
-        "click",
-
-        function() {
-
-
-            setType(
-
-                "income"
-
-            );
-
-        }
-
-    );
+    }
+);
 
 
-addButton
-
-    .addEventListener(
-
-        "click",
-
-        addRecord
-
-    );
+addButton.addEventListener(
+    "click",
+    addRecord
+);
 
 
-monthSelect
-
-    .addEventListener(
-
-        "change",
-
-        render
-
-    );
+monthSelect.addEventListener(
+    "change",
+    render
+);
 
 
 document
-
     .getElementById(
-
         "exportButton"
-
     )
-
     .addEventListener(
-
         "click",
-
         exportCSV
-
     );
 
 
@@ -1931,43 +1027,31 @@ document
    添加记录
 ========================= */
 
-
 function addRecord() {
 
-
     const date =
-
         dateInput.value;
 
 
     const amount =
-
         parseFloat(
-
             amountInput.value
-
         );
 
 
     const category =
-
         categorySelect.value;
 
 
     const note =
-
         noteInput.value.trim();
 
 
     if (!date) {
 
-
         alert(
-
             "请选择日期"
-
         );
-
 
         return;
 
@@ -1975,32 +1059,20 @@ function addRecord() {
 
 
     if (
-
-        isNaN(
-
-            amount
-
-        ) ||
-
+        isNaN(amount) ||
         amount <= 0
-
     ) {
 
-
         alert(
-
             "请输入正确的金额"
-
         );
-
 
         return;
 
     }
 
 
-    const record = {
-
+    records.push({
 
         id: Date.now(),
 
@@ -2014,26 +1086,12 @@ function addRecord() {
 
         note: note
 
-    };
-
-
-    records.push(
-
-        record
-
-    );
+    });
 
 
     localStorage.setItem(
-
         "moneyRecords",
-
-        JSON.stringify(
-
-            records
-
-        )
-
+        JSON.stringify(records)
     );
 
 
@@ -2049,23 +1107,16 @@ function addRecord() {
 
 
 /* =========================
-   删除
+   删除记录
 ========================= */
-
 
 function deleteRecord(id) {
 
-
     if (
-
         !confirm(
-
             "确定删除这条记录吗？"
-
         )
-
     ) {
-
 
         return;
 
@@ -2073,7 +1124,233 @@ function deleteRecord(id) {
 
 
     records =
-
         records.filter(
+            function(record) {
 
-            recor
+                return record.id !== id;
+
+            }
+        );
+
+
+    localStorage.setItem(
+        "moneyRecords",
+        JSON.stringify(records)
+    );
+
+
+    render();
+
+}
+
+
+/* =========================
+   获取月份
+========================= */
+
+function getCurrentMonth() {
+
+    return (
+        today.getFullYear()
+        +
+        "-"
+        +
+        String(
+            today.getMonth() + 1
+        ).padStart(2, "0")
+    );
+
+}
+
+
+function getMonths() {
+
+    const months =
+        records.map(
+            function(record) {
+
+                return record.date.slice(
+                    0,
+                    7
+                );
+
+            }
+        );
+
+
+    months.push(
+        getCurrentMonth()
+    );
+
+
+    return [
+        ...new Set(months)
+    ].sort().reverse();
+
+}
+
+
+/* =========================
+   更新月份选择器
+========================= */
+
+function updateMonthSelect() {
+
+    const oldValue =
+        monthSelect.value;
+
+
+    monthSelect.innerHTML = "";
+
+
+    const months =
+        getMonths();
+
+
+    months.forEach(
+        function(month) {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+
+            option.value =
+                month;
+
+
+            option.textContent =
+                month;
+
+
+            monthSelect.appendChild(
+                option
+            );
+
+        }
+    );
+
+
+    if (
+        months.includes(oldValue)
+    ) {
+
+        monthSelect.value =
+            oldValue;
+
+    }
+
+}
+
+
+/* =========================
+   渲染全部内容
+========================= */
+
+function render() {
+
+    updateMonthSelect();
+
+
+    const selectedMonth =
+        monthSelect.value;
+
+
+    const monthRecords =
+        records.filter(
+            function(record) {
+
+                return record.date.startsWith(
+                    selectedMonth
+                );
+
+            }
+        );
+
+
+    const income =
+        monthRecords
+        .filter(
+            function(record) {
+
+                return record.type === "income";
+
+            }
+        )
+        .reduce(
+            function(total, record) {
+
+                return total + record.amount;
+
+            },
+            0
+        );
+
+
+    const expense =
+        monthRecords
+        .filter(
+            function(record) {
+
+                return record.type === "expense";
+
+            }
+        )
+        .reduce(
+            function(total, record) {
+
+                return total + record.amount;
+
+            },
+            0
+        );
+
+
+    const balance =
+        income - expense;
+
+
+    document.getElementById(
+        "monthIncome"
+    ).textContent =
+        "¥" + income.toFixed(2);
+
+
+    document.getElementById(
+        "monthExpense"
+    ).textContent =
+        "¥" + expense.toFixed(2);
+
+
+    document.getElementById(
+        "monthBalance"
+    ).textContent =
+        "¥" + balance.toFixed(2);
+
+
+    renderTable(monthRecords);
+
+
+    renderCategories(monthRecords);
+
+}
+
+
+/* =========================
+   渲染记录表格
+========================= */
+
+function renderTable(monthRecords) {
+
+    const table =
+        document.getElementById(
+            "recordTable"
+        );
+
+
+    table.innerHTML = "";
+
+
+    if (
+      
