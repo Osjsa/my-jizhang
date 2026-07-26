@@ -537,4 +537,52 @@ function renderBreakdown(elId, recs, type){
   const totals = {};
   recs.forEach(r => { totals[r.category] = (totals[r.category]||0) + r.amount; });
   const max = Math.max(...Object.values(totals));
-  const sorted = Object.
+  const sorted = Object.entries(totals).sort((a,b)=>b[1]-a[1]);
+  sorted.forEach(([cat, amt]) => {
+    const row = document.createElement('div');
+    row.className = 'cat-bar-row';
+    row.innerHTML = `
+      <div class="cat-bar-head"><span>${cat}</span><span class="amt">${fmtMoney(amt)}</span></div>
+      <div class="cat-bar-track"><div class="cat-bar-fill ${type}" style="width:${(amt/max*100).toFixed(1)}%"></div></div>
+    `;
+    el.appendChild(row);
+  });
+}
+
+function renderBalanceRow(){
+  const income = records.filter(r=>r.type==='income').reduce((a,r)=>a+r.amount,0);
+  const expense = records.filter(r=>r.type==='expense').reduce((a,r)=>a+r.amount,0);
+  const net = income - expense;
+  const row = document.getElementById('balanceRow');
+  row.innerHTML = `
+    <div class="seal jade">
+      <div class="seal-label">总收入</div>
+      <div class="seal-amount">${income.toFixed(0)}</div>
+    </div>
+    <div class="seal">
+      <div class="seal-label">总支出</div>
+      <div class="seal-amount">${expense.toFixed(0)}</div>
+    </div>
+    <div class="balance-text">累计结余　<b>${fmtMoney(net)}</b></div>
+  `;
+}
+
+function renderAll(){
+  renderLedgerList();
+  renderSummary();
+  renderBalanceRow();
+}
+
+async function init(){
+  document.getElementById('inputDate').value = todayStr();
+  renderToday();
+  renderCatGrid();
+  document.querySelector('.ledger-list').innerHTML = '<div class="loading">正在加载记录…</div>';
+  await loadRecords();
+  renderAll();
+}
+
+init();
+</script>
+</body>
+</html>
